@@ -46,3 +46,10 @@ body {
   transform-style: preserve-3d;
   background-color: yellowgreen;
 }
+
+canvas{
+  margin: auto;
+  /* margin-left: 100px; */
+  display: flex;
+  justify-content: center;
+}

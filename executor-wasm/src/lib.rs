@@ -1,7 +1,9 @@
 //! Executor with your game connected to it as a plugin.
+use fyrox::dpi::LogicalSize;
 use fyrox::engine::executor::Executor;
 use CandyCrush::Game;
-use fyrox::core::wasm_bindgen::{self, prelude::*};
+use fyrox::engine::GraphicsContextParams;
+use fyrox::event_loop::EventLoop;
 
 #[wasm_bindgen]
 extern "C" {
@@ -35,11 +37,26 @@ pub fn set_panic_hook() {
         std::panic::set_hook(Box::new(custom_panic_hook));
     });
 }
+use fyrox::window::WindowAttributes;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen]
 pub fn main() {
     set_panic_hook();
-    let mut executor = Executor::new();
+    let mut window_attributes = WindowAttributes::default();
+    window_attributes.inner_size = Some(LogicalSize::new(800, 600).into());
+    window_attributes.resizable = true;
+    window_attributes.title = "CandyCrush".to_string();
+
+
+    let mut executor =Executor::from_params(
+        EventLoop::new().unwrap(),
+        GraphicsContextParams {
+            window_attributes,
+            vsync: true,
+            msaa_sample_count: None,
+        },
+    );
     executor.add_plugin(Game::default());
     executor.run()
 }
