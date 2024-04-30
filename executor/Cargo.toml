@@ -1,0 +1,13 @@
+
+[package]
+name = "executor"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+fyrox = { workspace = true }
+CandyCrush = { path = "../game", optional = true }
+
+[features]
+default = ["CandyCrush"]
+dylib = ["fyrox/dylib"]
